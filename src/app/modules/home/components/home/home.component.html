@@ -1,0 +1,112 @@
+<div class="container pb-5">
+
+  <div class="header py-3">
+    <h1>Listado de Eventos</h1>
+    <hr>
+  </div>
+
+  <div class="row ">
+    <div class="col-sm-3 col-xs-3">
+      <br>
+      <div class="form-group has-search">
+        <span class="fa fa-search form-control-feedback"></span>
+        <span class="fa fa-times-circle form-control-clear" (click)="handleClear()"></span>
+        <input #inputSearch type="text" class="form-control" (keyup)="updateTable(inputSearch.value)" placeholder="Search">
+      </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-sm-12 col-sx-12 table-content table-responsive" >
+     <table class="table">
+        <thead class="">
+          <tr class="">
+            <th *ngFor="let head of tableHeader">{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tableBodyFilter | paginate: {
+              id: 'listing_pagination',
+              itemsPerPage: itemsPerPage,
+              currentPage: page,
+              totalItems: tableBodyFilter.length
+            }"
+          >
+            <td>{{row.id}}</td>
+            <td>{{row.labels.join(", ")}}</td>
+            <td>
+              <span class="badge badge-pill"
+                [ngClass]="{
+                  'badge-info':row.criticality === 'alta',
+                  'badge-warning':row.criticality === 'media',
+                  'badge-danger':row.criticality === 'baja'
+                }"
+              >
+                {{row.criticality}}
+              </span>
+            </td>
+            <td>
+              {{row.timestamp}}
+            </td>
+            <td>
+              {{row.eventBody.symbol}} <span *ngIf="row.eventBody.codigoOperacion">- ({{row.eventBody.codigoOperacion}})</span>
+            </td>
+            <td>
+              <span
+                class="badge badge-pill"
+                [ngClass]="{
+                  'badge-secondary':row.status === 'desconcido',
+                  'badge-success':row.status !== 'desconcido'
+                }"
+              >
+                {{row.status}}
+              </span>
+            </td>
+            <td>
+              <input type="checkbox" (click)="changeChecked(row)" [checked]="row.checked === 'visto'">
+            </td>
+
+          </tr>
+          <tr>
+            <td *ngIf="tableBodyFilter.length===0" colspan="6" class="opacity_label">Aún no hay información almacenada de dispositivos</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row generic-pagination-buttons py-4">
+    <div class="col-12 pagination-center">
+      <div class="generic-pagination-buttons-pagination">
+        <pagination-controls
+        id="listing_pagination"
+          class="generic-pagination"
+          maxSize="5"
+          directionLinks="true"
+          (pageChange)="page = $event"
+          previousLabel="" nextLabel="">
+        </pagination-controls>
+      </div>
+      <div class="item-per-pages">
+        <div class="mb-3">
+          <div class=" number-page-box input-group is-invalid">
+            <div class="input-group-prepend ">
+              <label class="number-page-label input-group-text" for="validatedInputGroupSelect">Mostrar</label>
+            </div>
+            <select #itemForTable class="custom-select" id="validatedInputGroupSelect" (change)="saveItemPerPage(itemForTable.value)" required>
+              <option *ngFor="let num of numItems" [value]="num" [selected]="this.itemsPerPage===num">
+                {{ num }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="total-vistos">
+          <b> TOTAL VISTOS: </b> <br>
+          Vistos: {{totalVistos}} <br>
+          No Vistos: {{totalRec - totalVistos}}
+      </div>
+    </div>
+  </div>
+
+</div>

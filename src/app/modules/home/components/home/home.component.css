@@ -1,0 +1,30 @@
+td,th{
+  text-align: center;
+}
+
+table{
+  margin: 0px;
+}
+
+.table-content{
+  border: 1px solid #cccccc;
+  padding: 0px;
+  margin: 10px;
+  margin-bottom: 30px;
+}
+
+.pagination-center{
+  display: flex;
+  justify-content: center;
+}
+
+.item-per-pages{
+  position: absolute;
+  right: 0px;
+  bottom: -1px;
+}
+.total-vistos{
+  position: absolute;
+  left: 0px;
+  bottom: -1px;
+}
