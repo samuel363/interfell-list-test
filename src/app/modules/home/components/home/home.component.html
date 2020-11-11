@@ -6,13 +6,57 @@
   </div>
 
   <div class="row ">
-    <div class="col-sm-3 col-xs-3">
-      <br>
+    <div class="col-sm-3">
+      <label for="">Filtos:</label>
       <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
-        <span class="fa fa-times-circle form-control-clear" (click)="handleClear()"></span>
-        <input #inputSearch type="text" class="form-control" (keyup)="updateTable(inputSearch.value)" placeholder="Search">
+        <input #inputSearch type="text" class="form-control" (keyup)="updateTable(inputSearch.value)" placeholder="Buscar">
+        <span class="fa fa-times-circle form-control-clear" (click)="handleClear()"></span> 
       </div>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="col-12">
+      <br>
+      <label for="">Filtrar por fecha...</label>
+    </div>
+    <div class="col-sm-3 content-data-filter">
+      <mat-form-field >
+        <input matInput [ngxMatDatetimePicker]="picker"
+          placeholder="Fecha inicio"
+          [(ngModel)]="dateStart"
+          (ngModelChange)="filterbyDate()"
+        >
+        <mat-datepicker-toggle matSuffix [for]="picker">
+        </mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker
+          [showSpinners]="true" [showSeconds]="true"
+          [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+          [touchUi]="false"
+          [color]="'#cccccc'">
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-4 col-xs-4 content-data-filter">
+      <mat-form-field >
+        <input matInput [ngxMatDatetimePicker]="picker2"
+          placeholder="Fecha fin"
+          [(ngModel)]="dateEnd"
+          (ngModelChange)="filterbyDate()"
+        >
+        <mat-datepicker-toggle matSuffix [for]="picker2">
+        </mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker2
+          [showSpinners]="true" [showSeconds]="true"
+          [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+          [touchUi]="false"
+          [color]="'#cccccc'">
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+
+      <span class="fa fa-times-circle form-control-clear" 
+      (click)="clearDataFilter()"
+      title="Limpiar Filtrado.."
+      ></span>
     </div>
   </div>
 
@@ -21,7 +65,19 @@
      <table class="table">
         <thead class="">
           <tr class="">
-            <th *ngFor="let head of tableHeader">{{head}}</th>
+            <th *ngFor="let head of tableHeader">
+              {{head}}
+              <i *ngIf="head === 'timestamp'"
+                (click)="sortByDate()"
+                class="fa"
+                [ngClass]="{
+                  'fa-angle-down': orderByDate !== 'ASC',
+                  'fa-angle-up': orderByDate === 'ASC'
+                }"
+                title="Ordenar por Fecha !.."
+              >
+              </i>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -68,7 +124,7 @@
 
           </tr>
           <tr>
-            <td *ngIf="tableBodyFilter.length===0" colspan="6" class="opacity_label">Aún no hay información almacenada de dispositivos</td>
+            <td *ngIf="tableBodyFilter.length===0" colspan="6" class="opacity_label">No existen resultados</td>
           </tr>
         </tbody>
       </table>
@@ -76,7 +132,14 @@
   </div>
 
   <div class="row generic-pagination-buttons py-4">
-    <div class="col-12 pagination-center">
+    <div class="order-sm-1 order-2 col-6 col-sm-3">
+      <div class="total-vistos">
+        <b>Resumen:</b> <br>
+        Vistos: {{totalVistos}} <br>
+        No Vistos: {{totalRec - totalVistos}}
+      </div>
+    </div>
+    <div class="order-sm-2 order-1 col-12 col-sm-6 pagination-center">
       <div class="generic-pagination-buttons-pagination">
         <pagination-controls
         id="listing_pagination"
@@ -87,11 +150,13 @@
           previousLabel="" nextLabel="">
         </pagination-controls>
       </div>
+    </div>
+    <div class="order-sm-3 order-3 col-6 col-sm-3">
       <div class="item-per-pages">
         <div class="mb-3">
           <div class=" number-page-box input-group is-invalid">
             <div class="input-group-prepend ">
-              <label class="number-page-label input-group-text" for="validatedInputGroupSelect">Mostrar</label>
+              <label class="number-page-label input-group-text" for="validatedInputGroupSelect">Items</label>
             </div>
             <select #itemForTable class="custom-select" id="validatedInputGroupSelect" (change)="saveItemPerPage(itemForTable.value)" required>
               <option *ngFor="let num of numItems" [value]="num" [selected]="this.itemsPerPage===num">
@@ -101,11 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="total-vistos">
-          <b> TOTAL VISTOS: </b> <br>
-          Vistos: {{totalVistos}} <br>
-          No Vistos: {{totalRec - totalVistos}}
-      </div>
+
     </div>
   </div>
 

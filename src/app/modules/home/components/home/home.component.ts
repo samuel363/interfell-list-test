@@ -9,6 +9,7 @@ import { ListService } from 'src/app/services/list.service';
 export class HomeComponent implements OnInit {
 
   @ViewChild('inputSearch') inputSearch;
+  @ViewChild('piker') piker;
 
   data: any;
   tableHeader = [];
@@ -16,6 +17,8 @@ export class HomeComponent implements OnInit {
   tableBodyFilter = [];
 
   totalVistos = 0;
+
+  orderByDate = 'DES';
 
   // pages
   numItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -25,6 +28,9 @@ export class HomeComponent implements OnInit {
   maxSize = 5;
   target: any;
   //
+
+  dateStart;
+  dateEnd;
 
   constructor(
     private listService: ListService
@@ -54,7 +60,6 @@ export class HomeComponent implements OnInit {
       if (
         value.id.toString().toUpperCase().search(text) !== -1 ||
         value.criticality.toUpperCase().search(text) !== -1 ||
-        value.timestamp.toUpperCase().search(text) !== -1 ||
         value.status.toUpperCase().search(text) !== -1 ||
         value.checked.toUpperCase() === text ||
         (value.labels.filter(f => { return f.toUpperCase().search(text) !== -1 }).length > 0 ) ||
@@ -82,6 +87,37 @@ export class HomeComponent implements OnInit {
   }
   countChekeds(): void{
     this.totalVistos = this.tableBody.filter(f => { return f.checked === 'visto' }).length;
+  }
+  sortByDate(): void{
+    const self = this;
+    this.tableBodyFilter.sort(function (a,b){
+      if (self.orderByDate === 'ASC'){
+        return new Date(b.timestamp).getTime() > new Date(a.timestamp).getTime() ? 1 : -1;
+      }else{
+        return new Date(b.timestamp).getTime() < new Date(a.timestamp).getTime() ? 1 : -1;
+      }
+    });
+
+    this.orderByDate = this.orderByDate === 'ASC' ? 'DES' : 'ASC';
+
+  }
+  clearDataFilter(): void{
+    this.tableBodyFilter = this.tableBody;
+    console.log(this.dateStart);
+    this.dateStart = undefined;
+    this.dateEnd = undefined;
+    console.log(this.dateStart);
+  }
+  filterbyDate(): void{
+    const self = this;
+    if (this.dateStart !== undefined && this.dateEnd !== undefined ){
+      this.tableBodyFilter = this.tableBody.filter(f => {
+        return (
+          self.dateStart.valueOf() < new Date(f.timestamp).getTime() &&
+          self.dateEnd.valueOf() > new Date(f.timestamp).getTime()
+        );
+      });
+    }
   }
 
 }

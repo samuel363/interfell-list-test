@@ -16,15 +16,25 @@ table{
 .pagination-center{
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
-.item-per-pages{
-  position: absolute;
-  right: 0px;
-  bottom: -1px;
+i.fa{
+  font-size:15px;
+  margin-left: 5px;
 }
-.total-vistos{
-  position: absolute;
-  left: 0px;
-  bottom: -1px;
+
+.content-data-filter,.has-search{
+  display: flex;
+}
+.content-data-filter>span{
+  padding: 18px;
+  padding-left: 25px;
+  font-size: 20px;
+}
+
+.has-search>span{
+  padding: 7px;
+  padding-left: 25px;
+  font-size: 15px;
 }
