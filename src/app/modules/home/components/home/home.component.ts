@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
         value.criticality.toUpperCase().search(text) !== -1 ||
         value.status.toUpperCase().search(text) !== -1 ||
         value.checked.toUpperCase() === text ||
-        (value.labels.filter(f => { return f.toUpperCase().search(text) !== -1 }).length > 0 ) ||
+        (value.labels.filter(f => f.toUpperCase().search(text) !== -1 ).length > 0 ) ||
         (value.eventBody.symbol === undefined ? false : value.eventBody.symbol.toUpperCase().search(text) !== -1 ) ||
         (value.eventBody.codigoOperacion === undefined ? false : value.eventBody.codigoOperacion.toUpperCase().search(text) !== -1 )
       ){
@@ -86,11 +86,11 @@ export class HomeComponent implements OnInit {
     }
   }
   countChekeds(): void{
-    this.totalVistos = this.tableBody.filter(f => { return f.checked === 'visto' }).length;
+    this.totalVistos = this.tableBody.filter(f => f.checked === 'visto' ).length;
   }
   sortByDate(): void{
     const self = this;
-    this.tableBodyFilter.sort(function (a,b){
+    this.tableBodyFilter.sort( ( a, b): number => {
       if (self.orderByDate === 'ASC'){
         return new Date(b.timestamp).getTime() > new Date(a.timestamp).getTime() ? 1 : -1;
       }else{
