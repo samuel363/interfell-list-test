@@ -27,6 +27,10 @@ i.fa{
 .content-data-filter,.has-search{
   display: flex;
 }
+.head-flex{
+  display: flex;
+  justify-content: center;
+}
 .content-data-filter>span{
   padding: 18px;
   padding-left: 25px;

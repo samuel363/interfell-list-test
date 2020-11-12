@@ -6,7 +6,7 @@
   </div>
 
   <div class="row ">
-    <div class="col-sm-3">
+    <div class="col-md-3">
       <label for="">Filtos:</label>
       <div class="form-group has-search">
         <input #inputSearch type="text" class="form-control" (keyup)="updateTable(inputSearch.value)" placeholder="Buscar">
@@ -19,9 +19,10 @@
       <br>
       <label for="">Filtrar por fecha...</label>
     </div>
-    <div class="col-sm-3 content-data-filter">
+    <div class="col-md-4 col-lg-3 content-data-filter">
       <mat-form-field >
         <input matInput [ngxMatDatetimePicker]="picker"
+          type="datetime"
           placeholder="Fecha inicio"
           [(ngModel)]="dateStart"
           (ngModelChange)="filterbyDate()"
@@ -36,9 +37,10 @@
         </ngx-mat-datetime-picker>
       </mat-form-field>
     </div>
-    <div class="col-sm-4 col-xs-4 content-data-filter">
+    <div class="col-md-4 col-xs-4 content-data-filter">
       <mat-form-field >
         <input matInput [ngxMatDatetimePicker]="picker2"
+          type="datetime"
           placeholder="Fecha fin"
           [(ngModel)]="dateEnd"
           (ngModelChange)="filterbyDate()"
@@ -65,9 +67,9 @@
      <table class="table">
         <thead class="">
           <tr class="">
-            <th *ngFor="let head of tableHeader">
+            <th *ngFor="let head of tableHeader" [ngClass]="{ 'head-flex': head === 'FECHA'}">
               {{head}}
-              <i *ngIf="head === 'timestamp'"
+              <i *ngIf="head === 'FECHA'"
                 (click)="sortByDate()"
                 class="fa"
                 [ngClass]="{
@@ -102,7 +104,7 @@
               </span>
             </td>
             <td>
-              {{row.timestamp}}
+              {{row.timestamp|parseDate}}
             </td>
             <td>
               {{row.eventBody.symbol}} <span *ngIf="row.eventBody.codigoOperacion">- ({{row.eventBody.codigoOperacion}})</span>

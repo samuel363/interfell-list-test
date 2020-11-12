@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit {
   ) {
     this.data = listService.getData();
     this.tableBody = this.data.events;
-    this.tableHeader = Object.keys(this.tableBody[0]);
+    //this.tableHeader = Object.keys(this.tableBody[0]);
+    this.tableHeader = ['ID',	'ETIQUETAS',	'CRITICALIDAD',	'FECHA', 	'EVENTOS',	'ESTATUS',	'VISTO'];
     this.totalRec = this.tableBody.length;
     this.tableBodyFilter = this.tableBody;
 
